@@ -22,7 +22,7 @@ class Contacts {
    add (name, email, address, phone) {
     const user = new User (name, email, address, phone)
     const myUser = user.get()
-    this.users.push({id: this.users.lenght, ...myUser})
+    this.users.push({id: this.users.length, ...myUser})
 
    }
 
@@ -31,6 +31,7 @@ class Contacts {
     this.users[id].email = email;
     this.users[id].address = address;
     this.users[id].phone = phone;
+    return name, email, address, phone
    }
    remove (id) {
     delete this.users[id]
@@ -79,6 +80,7 @@ class ContactsApp extends Contacts {
     }
 
     editModalWimdow(contactID, userData) {
+        const self = this
         const {id, name, email, address, phone} = userData
 
         const editBlock = document.getElementById(contactID)
@@ -103,6 +105,13 @@ class ContactsApp extends Contacts {
         editForm.appendChild(save)
 
         save.addEventListener('click', (event) => {
+            
+            const newName = inputName.value 
+            const newEmail = inputEmail.value 
+            const newAddress = inputAddress.value
+            const newPhone = inputPhone.value
+            
+            self.edit(id, newName, newEmail, newAddress, newPhone)
 
             this.displayContacts()
         })
@@ -134,9 +143,9 @@ class ContactsApp extends Contacts {
             `;
             const remove = document.createElement('button');
             remove.innerHTML = 'Delete'
-            remove.addEventListener('click', () => {
+            remove.addEventListener('click', (event) => {
                 self.remove(user.id)
-                self.displayContacts()
+                this.displayContacts()
             })
             contact.appendChild(remove)
 
